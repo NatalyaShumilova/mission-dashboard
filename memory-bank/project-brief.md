@@ -22,8 +22,6 @@ As a field operations manager, I want to upload a drone mission flight path file
 ## Technology Requirements
 - Frontend must be built using React or Angular
 - Backend must be built with Python
-- Should use persistent storage such as a database like MongoDB or PostgreSQL
-  - Needs to include a way to run it locally (such as a Docker compose file).
-  - If not overly familiar, then just use a file based storage such as SQLite
+- Should use persistent storage such as SQLite
 - Must use Mapbox for the map component
 - Do not implement auth or user management
