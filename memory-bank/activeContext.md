@@ -3,16 +3,17 @@
 ## Current State
 - Memory bank initialization complete
 - React project for frontend has been set up
+- File upload component implemented
 
 ## Next Steps
-1. Implement file upload functionality
-2. Create components for the Drone Mission Planning Dashboard
-3. Integrate Mapbox for map rendering
-4. Implement core features as outlined in the project brief
+1. Integrate Mapbox for map rendering
+2. Implement core features as outlined in the project brief
+3. Set up backend with Python
 
 ## Recent Changes
 - Created productContext.md with initial content
 - Set up React project for frontend
+- Implemented file upload component
 
 ## Important Patterns and Preferences
 - Follow the project brief for feature implementation
