@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { uploadKMLFile, Waypoint, Mission } from '../services/missionService.ts';
 import './FileUpload.scss';
 
+interface FileUploadProps {
+  onUploadSuccess?: (mission: Mission, waypoints: Waypoint[]) => void;
+}
+
 interface FileUploadState {
   file: File | null;
   missionName: string;
@@ -12,7 +16,7 @@ interface FileUploadState {
   success: boolean;
 }
 
-const FileUpload: React.FC = () => {
+const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
   const [state, setState] = useState<FileUploadState>({
     file: null,
     missionName: '',
@@ -69,6 +73,11 @@ const FileUpload: React.FC = () => {
         mission: response.data.mission,
         error: null,
       }));
+
+      // Notify parent component of successful upload
+      if (onUploadSuccess) {
+        onUploadSuccess(response.data.mission, response.data.waypoints);
+      }
 
       console.log('Mission created successfully:', response.data);
     } catch (error) {

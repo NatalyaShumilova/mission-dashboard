@@ -1,0 +1,176 @@
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .map {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+  }
+
+  // Loading state
+  .map-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 1000;
+
+    &__spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  // Error state
+  .map-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 32px;
+    text-align: center;
+    background-color: #f8f9fa;
+
+    &__icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.6;
+    }
+
+    &__message {
+      max-width: 500px;
+
+      h3 {
+        margin: 0 0 12px 0;
+        color: #dc3545;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0 0 20px 0;
+        color: #666;
+        line-height: 1.5;
+      }
+    }
+
+    &__help {
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 20px;
+      text-align: left;
+
+      p {
+        margin: 0 0 12px 0;
+        font-weight: 500;
+        color: #495057;
+      }
+
+      ol {
+        margin: 0;
+        padding-left: 20px;
+        color: #666;
+
+        li {
+          margin-bottom: 8px;
+          line-height: 1.4;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      code {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 3px;
+        padding: 2px 6px;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 12px;
+        color: #e83e8c;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// Spinner animation
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .map-container {
+    border-radius: 0;
+    min-height: 300px;
+
+    .map-error {
+      padding: 20px;
+
+      &__icon {
+        font-size: 36px;
+      }
+
+      &__message h3 {
+        font-size: 16px;
+      }
+
+      &__help {
+        padding: 16px;
+
+        ol {
+          padding-left: 16px;
+        }
+      }
+    }
+  }
+}
+
+// Ensure Mapbox controls are properly styled
+.mapboxgl-ctrl-group {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mapboxgl-ctrl-scale {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+}

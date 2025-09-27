@@ -1,38 +1,118 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}
+
+/* Main App layout */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Main content area - takes up remaining space after header */
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  padding: 16px;
+}
+
+/* Ensure map takes full available space */
+.main-content .map-container {
+  flex: 1;
+  min-height: 0; /* Important for flexbox child to shrink */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 4px;
+  }
+}
+
+/* Loading and error states */
+.app-loading {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  height: 100vh;
+  background-color: #f8f9fa;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Utility classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus management for accessibility */
+.App:focus-within {
+  outline: none;
+}
+
+/* Ensure proper z-index stacking */
+.App > * {
+  position: relative;
+}
+
+/* Print styles */
+@media print {
+  .App {
+    height: auto;
+  }
+  
+  .main-content {
+    padding: 0;
+  }
+  
+  /* Hide interactive elements when printing */
+  .header__upload-btn,
+  .modal-overlay {
+    display: none !important;
   }
 }

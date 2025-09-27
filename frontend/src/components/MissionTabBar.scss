@@ -1,0 +1,150 @@
+.mission-tab-bar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome/Safari
+    }
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    color: #666;
+    font-size: 14px;
+  }
+
+  &__loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e0e0e0;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.mission-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  margin-right: 4px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 120px;
+  font-family: inherit;
+
+  &:hover {
+    background-color: #f8f9fa;
+    border-bottom-color: #dee2e6;
+  }
+
+  &--active {
+    border-bottom-color: #007bff;
+    background-color: #f8f9fa;
+
+    .mission-tab__name {
+      color: #007bff;
+      font-weight: 600;
+    }
+  }
+
+  &--upload {
+    border-left: 1px solid #e0e0e0;
+    margin-left: 8px;
+    color: #28a745;
+
+    &:hover {
+      background-color: #f8f9fa;
+      border-bottom-color: #28a745;
+    }
+
+    .mission-tab__upload-icon {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    .mission-tab__name {
+      font-size: 12px;
+      color: #28a745;
+    }
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    line-height: 1.2;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .mission-tab-bar {
+    &__container {
+      padding: 0 12px;
+    }
+  }
+
+  .mission-tab {
+    min-width: 100px;
+    padding: 10px 16px;
+
+    &__name {
+      font-size: 13px;
+    }
+
+    &--upload {
+      .mission-tab__name {
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .mission-tab {
+    min-width: 80px;
+    padding: 8px 12px;
+
+    &__name {
+      font-size: 12px;
+    }
+
+    &--upload {
+      .mission-tab__upload-icon {
+        font-size: 16px;
+      }
+
+      .mission-tab__name {
+        font-size: 10px;
+      }
+    }
+  }
+}

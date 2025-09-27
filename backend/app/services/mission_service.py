@@ -1,6 +1,6 @@
 from typing import Dict, List
 from app.database import db
-from app.models.mission import Mission, Annotation, NoFlyZone
+from app.models.mission import Mission, Waypoint, Annotation, NoFlyZone
 from app.utils.kml_parser import parse_kml_file, KMLParsingError
 from app.errors import ValidationError, NotFoundError
 import logging
@@ -53,25 +53,39 @@ class MissionService:
             parsed_data = parse_kml_file(kml_content)
             
             # Create new mission
-            # TODO: Save parsed waypoints to avoid re-parsing later
             new_mission = Mission(
                 name=mission_name.strip(),
                 kml_data=kml_content
             )
             
             db.session.add(new_mission)
+            db.session.flush()  # Flush to get the mission ID
+            
+            # Save parsed waypoints to database
+            waypoints = []
+            for waypoint_data in parsed_data['waypoints']:
+                waypoint = Waypoint(
+                    mission_id=new_mission.id,
+                    latitude=waypoint_data['latitude'],
+                    longitude=waypoint_data['longitude'],
+                    altitude=waypoint_data['altitude'],
+                    index=waypoint_data['index']
+                )
+                waypoints.append(waypoint)
+                db.session.add(waypoint)
+            
             db.session.commit()
             
-            logger.info(f"Created mission {new_mission.id} with {parsed_data['waypoint_count']} waypoints")
+            logger.info(f"Created mission {new_mission.id} with {parsed_data['waypoint_count']} waypoints saved to database")
             
-            # Return structured response
+            # Return structured response with saved waypoints
             return {
                 'mission': {
                     'id': new_mission.id,
                     'name': new_mission.name
                 },
-                'waypoints': parsed_data['waypoints'],
-                'waypoint_count': parsed_data['waypoint_count']
+                'waypoints': [waypoint.to_dict() for waypoint in waypoints],
+                'waypoint_count': len(waypoints)
             }
             
         except KMLParsingError as e:

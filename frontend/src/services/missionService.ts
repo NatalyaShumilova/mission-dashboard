@@ -1,6 +1,6 @@
 // API service for mission-related operations
 
-const API_BASE_URL = (window as any).env?.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 // Types
 export interface Waypoint {
