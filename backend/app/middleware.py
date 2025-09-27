@@ -104,13 +104,13 @@ def add_api_versioning(app):
                 g.api_version = path_parts[2]  # e.g., 'v1' from '/api/v1/missions'
             else:
                 g.api_version = 'v1'
-        
-        # Add version to response headers
-        @app.after_request
-        def add_version_header(response):
-            if hasattr(g, 'api_version'):
-                response.headers['API-Version'] = g.api_version
-            return response
+    
+    @app.after_request
+    def add_version_header(response):
+        # Add version to response headers if available
+        if hasattr(g, 'api_version'):
+            response.headers['API-Version'] = g.api_version
+        return response
 
 def register_middleware(app):
     """Register all middleware with the Flask app."""
