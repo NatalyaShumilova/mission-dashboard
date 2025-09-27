@@ -28,9 +28,12 @@ The Drone Mission Planning Dashboard follows a robust client-server architecture
 - **Application Factory Pattern**: Environment-specific app configuration
 - **Blueprint Pattern**: Modular route organization
 - **Repository Pattern**: Data access abstraction through SQLAlchemy
+- **Service Layer Pattern**: Business logic separation (MissionService)
 - **Dependency Injection**: Configuration and database injection
 - **Middleware Pattern**: Cross-cutting concerns (logging, security, CORS)
 - **Strategy Pattern**: Environment-specific configurations
+- **Parser Pattern**: KML file parsing with error handling
+- **Utility Pattern**: Reusable parsing and validation functions
 
 ### API Patterns
 - **RESTful API**: Standard HTTP methods and resource-based URLs

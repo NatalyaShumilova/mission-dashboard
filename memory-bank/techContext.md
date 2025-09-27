@@ -56,7 +56,17 @@ psycopg2-binary            # PostgreSQL adapter
 ```
 
 ### Frontend Dependencies
-- React, Mapbox GL JS, Axios (for API calls)
+- React (TypeScript support enabled)
+- Mapbox GL JS (for map rendering)
+- Native fetch API (no axios dependency)
+- SCSS for styling
+
+### New Components Implemented
+- **KML Parser**: XML parsing with namespace handling for DJI drone formats
+- **Mission Service**: Business logic layer for mission operations
+- **TypeScript API Service**: Type-safe frontend API communication
+- **Unit Testing**: PyUnit test suite for KML parsing validation
+- **File Upload System**: Multipart form data handling with validation
 
 ## Infrastructure Components
 
