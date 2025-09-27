@@ -62,7 +62,7 @@ def add_health_check(app):
     
     @app.route('/health')
     def health_check():
-        from app.utils import api_response
+        from app.utils.api_helpers import api_response
         return api_response(
             data={'status': 'healthy', 'service': 'mission-dashboard-api'},
             message='Service is running'
@@ -70,7 +70,7 @@ def add_health_check(app):
     
     @app.route('/health/ready')
     def readiness_check():
-        from app.utils import api_response, api_error_response
+        from app.utils.api_helpers import api_response, api_error_response
         from app.database import db
         
         try:
@@ -125,7 +125,7 @@ def register_middleware(app):
     add_api_versioning(app)
     
     # Request/response middleware from utils
-    from app.utils import add_request_middleware
+    from app.utils.middleware import add_request_middleware
     add_request_middleware(app)
     
     app.logger.info("Middleware registered successfully")

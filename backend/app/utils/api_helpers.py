@@ -1,5 +1,4 @@
-"""Utility functions and response helpers for the API."""
-
+# API response helpers and utilities
 from flask import jsonify, request
 from datetime import datetime
 import uuid
@@ -143,23 +142,3 @@ def validate_json_request(required_fields=None, optional_fields=None):
     
     # Return only allowed fields
     return {field: data[field] for field in data.keys() if field in allowed_fields}
-
-def add_request_middleware(app):
-    """Add request middleware for ID generation and timing."""
-    
-    @app.before_request
-    def before_request():
-        request.request_id = generate_request_id()
-        request.start_time = datetime.utcnow()
-    
-    @app.after_request
-    def after_request(response):
-        # Add request ID to response headers
-        response.headers['X-Request-ID'] = getattr(request, 'request_id', 'unknown')
-        
-        # Add processing time
-        if hasattr(request, 'start_time'):
-            processing_time = (datetime.utcnow() - request.start_time).total_seconds()
-            response.headers['X-Processing-Time'] = f"{processing_time:.3f}s"
-        
-        return response
