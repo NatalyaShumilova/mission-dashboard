@@ -21,15 +21,12 @@ function App() {
       const response = await getAllMissions();
       
       if (response.success) {
-        const missionList = response.data.map(mission => ({
-          id: mission.id,
-          name: mission.name
-        }));
-        setMissions(missionList);
+        // Store full mission data including waypoints
+        setMissions(response.data);
         
         // Set first mission as active if no active mission and missions exist
-        if (missionList.length > 0 && !activeMissionId) {
-          setActiveMissionId(missionList[0].id);
+        if (response.data.length > 0 && !activeMissionId) {
+          setActiveMissionId(response.data[0].id);
         }
       }
     } catch (err) {
@@ -59,7 +56,11 @@ function App() {
     // Add new mission to the list and set it as active
     const newMission = {
       id: mission.id,
-      name: mission.name
+      name: mission.name,
+      waypoints: waypoints,
+      waypoint_count: waypoints.length,
+      annotations: [],
+      no_fly_zones: []
     };
     setMissions(prev => [...prev, newMission]);
     setActiveMissionId(mission.id);
@@ -72,9 +73,12 @@ function App() {
 
   const handleMissionSelect = (missionId) => {
     setActiveMissionId(missionId);
-    // TODO: In future, this will update the map to show the selected mission's waypoints
     console.log('Selected mission:', missionId);
   };
+
+  // Get active mission's waypoints
+  const activeMission = missions.find(mission => mission.id === activeMissionId);
+  const activeWaypoints = activeMission ? activeMission.waypoints : [];
 
   return (
     <div className="App">
@@ -89,7 +93,7 @@ function App() {
       />
       
       <main className="main-content">
-        <Map />
+        <Map waypoints={activeWaypoints} />
       </main>
 
       <Modal 

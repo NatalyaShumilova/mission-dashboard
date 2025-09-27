@@ -14,14 +14,17 @@
 - **MAJOR MILESTONE COMPLETED**: Mission Tab Bar Navigation System
 - **NEW**: Persistent waypoint storage in database (no more re-parsing KML files)
 - **NEW**: Complete mission navigation UI with tab bar above map
+- **MAJOR MILESTONE COMPLETED**: Waypoint Visualization on Map
+- **NEW**: Waypoint rendering system with interactive features
+- **NEW**: Flight path visualization connecting all waypoints
+- **NEW**: Interactive waypoint popups with detailed information
 
 ## Next Steps
-1. **NEXT**: Implement waypoint visualization on the map (display selected mission's waypoints)
-2. Implement annotation pins and no-fly zones on the map
-3. Add mission management UI (edit, delete missions)
-4. Implement real-time updates (stretch goal)
-5. Add comprehensive frontend error handling and validation
-6. Address TODOs in the project
+1. **NEXT**: Implement annotation pins and no-fly zones on the map
+2. Add mission management UI (edit, delete missions)
+3. Implement real-time updates (stretch goal)
+4. Add comprehensive frontend error handling and validation
+5. Address TODOs in the project
 
 ## Recent Changes
 - **CRITICAL BUG FIX**: Fixed frontend-backend API connectivity issue
@@ -70,6 +73,23 @@
 - **API Enhancement**: Enhanced get_all_missions endpoint to include waypoint data for tab bar
 - **Mission Navigation**: Tab selection system ready for map waypoint visualization
 - **Responsive Design**: Tab bar works seamlessly on mobile and desktop devices
+- **NEWEST MAJOR MILESTONE**: Waypoint Visualization System Completed
+- **Map Enhancement**: Enhanced Map.tsx component with comprehensive waypoint rendering using Mapbox GL JS
+- **Waypoint Display**: Orange circular markers with white borders and numbered labels for each waypoint
+- **Flight Path**: Connected orange line showing planned drone mission route between waypoints
+- **Interactive Features**: Click waypoints to see popup with altitude, coordinates, and waypoint details
+- **Auto-centering**: Map automatically zooms and centers to show all waypoints when mission selected
+- **TypeScript Fix**: Created proper tsconfig.json and installed @types/react-dom to resolve IDE errors
+- **Data Integration**: Waypoints properly passed from App.js to Map component via props
+- **Mission Switching**: Waypoint display updates correctly when switching between missions
+- **User Experience**: Hover effects, cursor changes, and professional styling for waypoint interactions
+- **CRITICAL BUG FIX**: Fixed waypoint clearing bug when switching to empty missions
+- **Root Cause**: Map component's waypoint visualization effect returned early when waypoints array was empty, preventing cleanup of existing waypoints and flight paths
+- **Solution**: Restructured waypoint visualization logic to always perform cleanup first, regardless of waypoint array length
+- **Event Listener Memory Leak Fix**: Properly managed Mapbox event listeners to prevent memory leaks
+- **Event Handler Management**: Created named event handler functions with proper cleanup using map.off() with function references
+- **Memory Optimization**: Added cleanup function return from useEffect to ensure proper resource management
+- **Bug Impact**: Users can now switch from missions with waypoints to empty missions without seeing stale waypoint data on the map
 
 ## Important Patterns and Preferences
 - Follow Flask best practices with application factory pattern
