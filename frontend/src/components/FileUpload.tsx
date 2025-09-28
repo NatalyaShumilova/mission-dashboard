@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadKMLFile, Waypoint, Mission } from '../services/missionService.ts';
+import { uploadKMLFile, Waypoint, Mission } from '../services/missionService';
 import './FileUpload.scss';
 
 interface FileUploadProps {

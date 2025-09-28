@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Map from './components/Map';
@@ -12,12 +12,10 @@ const App: React.FC = () => {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [activeMissionId, setActiveMissionId] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadMissions = async (): Promise<void> => {
+  
+  const loadMissions = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
-      setError(null);
       const response = await getAllMissions();
       
       if (response.success) {
@@ -31,16 +29,15 @@ const App: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to load missions:', err);
-      setError('Failed to load missions');
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeMissionId]);
 
   // Load missions on component mount
   useEffect(() => {
     loadMissions();
-  }, []);
+  }, [loadMissions]);
 
   const handleUploadClick = (): void => {
     setIsUploadModalOpen(true);
