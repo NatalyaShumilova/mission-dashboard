@@ -37,12 +37,12 @@ AI seems to be doing a decent job at styling the UI - as proper UI/UX design is 
 
 ## Production-readiness
 
-*Interestingly, I have observed that Claude actually defaults to fully fledged production patterns for things like observability, testing, configuration, ect. I've actually had to tell it to simplify some of it, as this is still a prototype and does not need some of these capabilities.*
+*Interestingly, I have observed that Claude actually defaults to fully fledged production patterns for things like observability, testing, configuration, ect. I've actually had to tell it to simplify some of it, as this is still a prototype and does not need a lot of these capabilities at this stage.*
 
 These are some considerations and work items that would need to be done before this protoype is production ready:
 - As I have run out of time, some core features (such as annotations) have not been implemented - presumably these would need to be completed before this piece can go to production. Additionally, there may be extra functionality required for production that was not brought up for the prototype (such as login capabilities, along with account management, the ability for full CRUD operations on Missions and Waypoints, ect.)
 - Definition of Done and Quality requirements - to bring this to a production ready state, it will need to meet the organisation's definition of done, including but not limited to considerations in areas such as:
-    - Security (for instance the current prototype doesn't even have logins)
+    - Security (access management, not logging full error traces, ect.)
     - Accessibility (screen reader, keyboard navigation, contrast, UI scaling, ect)
     - Localization if applicable, including translations
     - Testing and QA (we have unit tests, but there may be requirements for other forms of testing and quality assurance gates)
