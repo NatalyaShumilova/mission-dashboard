@@ -4,6 +4,8 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 // Types
 export interface Waypoint {
+  id: number;
+  mission_id: number;
   latitude: number;
   longitude: number;
   altitude: number | null;
@@ -13,6 +15,10 @@ export interface Waypoint {
 export interface Mission {
   id: number;
   name: string;
+  waypoints?: Waypoint[];
+  waypoint_count?: number;
+  annotations?: any[];
+  no_fly_zones?: any[];
 }
 
 export interface MissionResponse {
@@ -78,6 +84,7 @@ export const getAllMissions = async (): Promise<ApiResponse<Mission[]>> => {
 
 /**
  * Create an annotation for a mission
+ * TODO: Future feature - implement annotation functionality
  */
 export const createAnnotation = async (
   missionId: number, 
@@ -101,6 +108,7 @@ export const createAnnotation = async (
 
 /**
  * Create a no-fly zone for a mission
+ * TODO: Future feature - implement no-fly zone functionality
  */
 export const createNoFlyZone = async (
   missionId: number, 

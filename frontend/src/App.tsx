@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Header from './components/Header.tsx';
-import Map from './components/Map.tsx';
-import Modal from './components/Modal.tsx';
-import FileUpload from './components/FileUpload.tsx';
-import MissionTabBar from './components/MissionTabBar.tsx';
-import { getAllMissions } from './services/missionService.ts';
+import Header from './components/Header';
+import Map from './components/Map';
+import Modal from './components/Modal';
+import FileUpload from './components/FileUpload';
+import MissionTabBar from './components/MissionTabBar';
+import { getAllMissions, Mission, Waypoint } from './services/missionService';
 
-function App() {
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [missions, setMissions] = useState([]);
-  const [activeMissionId, setActiveMissionId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const App: React.FC = () => {
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+  const [missions, setMissions] = useState<Mission[]>([]);
+  const [activeMissionId, setActiveMissionId] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
- const loadMissions = async () => {
+  const loadMissions = async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
@@ -42,19 +42,19 @@ function App() {
     loadMissions();
   }, []);
 
-  const handleUploadClick = () => {
+  const handleUploadClick = (): void => {
     setIsUploadModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (): void => {
     setIsUploadModalOpen(false);
   };
 
-  const handleUploadSuccess = (mission, waypoints) => {
+  const handleUploadSuccess = (mission: Mission, waypoints: Waypoint[]): void => {
     console.log('Upload successful:', { mission, waypoints });
     
     // Add new mission to the list and set it as active
-    const newMission = {
+    const newMission: Mission = {
       id: mission.id,
       name: mission.name,
       waypoints: waypoints,
@@ -71,14 +71,14 @@ function App() {
     }, 2000);
   };
 
-  const handleMissionSelect = (missionId) => {
+  const handleMissionSelect = (missionId: number): void => {
     setActiveMissionId(missionId);
     console.log('Selected mission:', missionId);
   };
 
   // Get active mission's waypoints
   const activeMission = missions.find(mission => mission.id === activeMissionId);
-  const activeWaypoints = activeMission ? activeMission.waypoints : [];
+  const activeWaypoints = activeMission?.waypoints || [];
 
   return (
     <div className="App">
@@ -105,6 +105,6 @@ function App() {
       </Modal>
     </div>
   );
-}
+};
 
 export default App;
