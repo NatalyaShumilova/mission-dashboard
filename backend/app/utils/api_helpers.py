@@ -68,42 +68,6 @@ def api_error_response(message, status_code=400, details=None):
     response.status_code = status_code
     return response
 
-def paginate_query(query, page=1, per_page=20, max_per_page=100):
-    """
-    Paginate a SQLAlchemy query.
-    
-    Args:
-        query: SQLAlchemy query object
-        page: Page number (1-based)
-        per_page: Items per page
-        max_per_page: Maximum items per page allowed
-    
-    Returns:
-        dict with pagination info and items
-    """
-    # Ensure per_page doesn't exceed maximum
-    per_page = min(per_page, max_per_page)
-    
-    # Get paginated results
-    paginated = query.paginate(
-        page=page,
-        per_page=per_page,
-        error_out=False
-    )
-    
-    return {
-        'items': [item.to_dict() if hasattr(item, 'to_dict') else item for item in paginated.items],
-        'pagination': {
-            'page': paginated.page,
-            'per_page': paginated.per_page,
-            'total': paginated.total,
-            'pages': paginated.pages,
-            'has_next': paginated.has_next,
-            'has_prev': paginated.has_prev,
-            'next_page': paginated.next_num if paginated.has_next else None,
-            'prev_page': paginated.prev_num if paginated.has_prev else None
-        }
-    }
 
 def validate_json_request(required_fields=None, optional_fields=None):
     """

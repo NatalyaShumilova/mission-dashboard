@@ -38,55 +38,24 @@ class MissionService:
             
         Raises:
             ValidationError: If validation fails
-            KMLParsingError: If KML parsing fails
         """
         try:
             # Validate inputs
-            if not mission_name or not mission_name.strip():
-                raise ValidationError("Mission name is required")
-            
-            if not kml_content or not kml_content.strip():
-                raise ValidationError("KML content is required")
+            MissionService._validate_mission_inputs(mission_name, kml_content)
             
             # Parse KML file
             logger.info(f"Parsing KML for mission: {mission_name}")
             parsed_data = parse_kml_file(kml_content)
             
-            # Create new mission
-            new_mission = Mission(
-                name=mission_name.strip(),
-                kml_data=kml_content
+            # Create mission and waypoints in database
+            mission, waypoints = MissionService._create_mission_with_waypoints(
+                mission_name.strip(), kml_content, parsed_data
             )
             
-            db.session.add(new_mission)
-            db.session.flush()  # Flush to get the mission ID
+            logger.info(f"Created mission {mission.id} with {len(waypoints)} waypoints saved to database")
             
-            # Save parsed waypoints to database
-            waypoints = []
-            for waypoint_data in parsed_data['waypoints']:
-                waypoint = Waypoint(
-                    mission_id=new_mission.id,
-                    latitude=waypoint_data['latitude'],
-                    longitude=waypoint_data['longitude'],
-                    altitude=waypoint_data['altitude'],
-                    index=waypoint_data['index']
-                )
-                waypoints.append(waypoint)
-                db.session.add(waypoint)
-            
-            db.session.commit()
-            
-            logger.info(f"Created mission {new_mission.id} with {parsed_data['waypoint_count']} waypoints saved to database")
-            
-            # Return structured response with saved waypoints
-            return {
-                'mission': {
-                    'id': new_mission.id,
-                    'name': new_mission.name
-                },
-                'waypoints': [waypoint.to_dict() for waypoint in waypoints],
-                'waypoint_count': len(waypoints)
-            }
+            # Return structured response
+            return MissionService._build_mission_response(mission, waypoints)
             
         except KMLParsingError as e:
             logger.error(f"KML parsing failed for mission {mission_name}: {str(e)}")
@@ -97,6 +66,55 @@ class MissionService:
             logger.error(f"Failed to create mission {mission_name}: {str(e)}")
             db.session.rollback()
             raise ValidationError(f"Failed to create mission: {str(e)}")
+    
+    @staticmethod
+    def _validate_mission_inputs(mission_name: str, kml_content: str) -> None:
+        """Validate mission creation inputs"""
+        if not mission_name or not mission_name.strip():
+            raise ValidationError("Mission name is required")
+        
+        if not kml_content or not kml_content.strip():
+            raise ValidationError("KML content is required")
+    
+    @staticmethod
+    def _create_mission_with_waypoints(mission_name: str, kml_content: str, parsed_data: Dict) -> tuple[Mission, List[Waypoint]]:
+        """Create mission and associated waypoints in database"""
+        # Create new mission
+        new_mission = Mission(
+            name=mission_name,
+            kml_data=kml_content
+        )
+        
+        db.session.add(new_mission)
+        db.session.flush()  # Flush to get the mission ID
+        
+        # Create waypoints
+        waypoints = []
+        for waypoint_data in parsed_data['waypoints']:
+            waypoint = Waypoint(
+                mission_id=new_mission.id,
+                latitude=waypoint_data['latitude'],
+                longitude=waypoint_data['longitude'],
+                altitude=waypoint_data['altitude'],
+                index=waypoint_data['index']
+            )
+            waypoints.append(waypoint)
+            db.session.add(waypoint)
+        
+        db.session.commit()
+        return new_mission, waypoints
+    
+    @staticmethod
+    def _build_mission_response(mission: Mission, waypoints: List[Waypoint]) -> Dict:
+        """Build standardized mission creation response"""
+        return {
+            'mission': {
+                'id': mission.id,
+                'name': mission.name
+            },
+            'waypoints': [waypoint.to_dict() for waypoint in waypoints],
+            'waypoint_count': len(waypoints)
+        }
     
     @staticmethod
     def update_mission(mission_id: int, name: str = None, kml_data: str = None) -> Dict:

@@ -75,57 +75,6 @@ export const getAllMissions = async (): Promise<ApiResponse<Mission[]>> => {
   return response.json();
 };
 
-/**
- * Get a specific mission by ID
- */
-export const getMissionById = async (missionId: number): Promise<ApiResponse<Mission>> => {
-  const response = await fetch(`${API_BASE_URL}/missions/${missionId}`);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-};
-
-/**
- * Update a mission
- */
-export const updateMission = async (
-  missionId: number, 
-  updateData: Partial<{ name: string; kml_data: string }>
-): Promise<ApiResponse<Mission>> => {
-  const response = await fetch(`${API_BASE_URL}/missions/${missionId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(updateData),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-};
-
-/**
- * Delete a mission
- */
-export const deleteMission = async (missionId: number): Promise<ApiResponse<null>> => {
-  const response = await fetch(`${API_BASE_URL}/missions/${missionId}`, {
-    method: 'DELETE',
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-};
 
 /**
  * Create an annotation for a mission

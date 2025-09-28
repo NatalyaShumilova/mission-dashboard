@@ -1,18 +1,19 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from app.services.mission_service import MissionService
 from app.errors import ValidationError
+from app.utils.api_helpers import api_response
 
 bp = Blueprint('missions', __name__, url_prefix='/api/missions')
 
 @bp.route('/', methods=['GET'])
 def get_missions():
     missions = MissionService.get_all_missions()
-    return jsonify({'success': True, 'data': missions})
+    return api_response(data=missions)
 
 @bp.route('/<int:id>', methods=['GET'])
 def get_mission(id):
     mission = MissionService.get_mission_by_id(id)
-    return jsonify({'success': True, 'data': mission})
+    return api_response(data=mission)
 
 @bp.route('/', methods=['POST'])
 def create_mission():
@@ -40,7 +41,7 @@ def create_mission():
         # Create mission using service
         result = MissionService.create_mission_from_kml(mission_name, kml_content)
         
-        return jsonify({'success': True, 'data': result}), 201
+        return api_response(data=result, status_code=201)
         
     except ValidationError:
         raise
@@ -55,12 +56,12 @@ def update_mission(id):
         name=data.get('name'), 
         kml_data=data.get('kml_data')
     )
-    return jsonify({'success': True, 'data': mission})
+    return api_response(data=mission)
 
 @bp.route('/<int:id>', methods=['DELETE'])
 def delete_mission(id):
     MissionService.delete_mission(id)
-    return jsonify({'success': True, 'message': 'Mission deleted successfully'})
+    return api_response(message='Mission deleted successfully')
 
 @bp.route('/<int:mission_id>/annotations', methods=['POST'])
 def create_annotation(mission_id):
@@ -71,7 +72,7 @@ def create_annotation(mission_id):
         longitude=data['longitude'],
         note=data.get('note')
     )
-    return jsonify({'success': True, 'data': annotation}), 201
+    return api_response(data=annotation, status_code=201)
 
 @bp.route('/<int:mission_id>/no_fly_zones', methods=['POST'])
 def create_no_fly_zone(mission_id):
@@ -81,4 +82,4 @@ def create_no_fly_zone(mission_id):
         coordinates=data['coordinates'],
         note=data.get('note')
     )
-    return jsonify({'success': True, 'data': no_fly_zone}), 201
+    return api_response(data=no_fly_zone, status_code=201)
