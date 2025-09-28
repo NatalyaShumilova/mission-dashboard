@@ -46,5 +46,10 @@ These are some considerations and work items that would need to be done before t
     - Accessibility (screen reader, keyboard navigation, contrast, UI scaling, ect)
     - Localization if applicable, including translations
     - Testing and QA (we have unit tests, but there may be requirements for other forms of testing and quality assurance gates)
-- Non-local environment setup and configuration. This will also include setting up an actual database, as in memory storage will not suffice for a production environment.
+- Non-local environment setup and configuration, including:
+    - Setting up an actual database, as in memory storage will not suffice for a production environment
+    - CI/CD
+    - Hosting, domain setup, certs, ect
+    - Observability in pre-prod and prod environments
+    - Ensuring correct environment variables have been set up for each environment
 - Proper UX/UI design, as the current one was jointly created by a developer and an AI, and was not given the necessary attention and consideration
